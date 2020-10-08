@@ -1,0 +1,5 @@
+ Var x = a;
+                    Function: main
+                        Body:
+                            x = 0;
+                        EndBody.
