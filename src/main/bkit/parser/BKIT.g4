@@ -108,12 +108,6 @@ op_sign: SUB | SUBF;
 
 ///////// Tokens
 
-QUOTE: '\'' ;
-
-DQUOTE: '"' ;
-
-ESC: '\\' [bfrnt'\\];
-
 // Identifier
 
 ID: [a-z][A-Za-z0-9_]* ;
@@ -234,15 +228,17 @@ RS: ']' ;
 
 INT_LIT: '0' | [1-9][0-9]* | '0'[Xx][A-F1-9][A-F0-9]* | '0'[Oo][1-7][0-7]*;
 
-FLOAT_LIT: ('0' | [1-9][0-9]*) '.' [0-9]* EXPONENT? | [1-9][0-9]* '.'? [0-9]* EXPONENT;
+FLOAT_LIT: ('0' | [1-9][0-9]*) '.' [0-9]* EXPONENT? | ('0' | [1-9][0-9]*) '.'? [0-9]* EXPONENT;
 
-EXPONENT: 'e' ('+' | '-')? [0-9]+;
+fragment EXPONENT: [Ee] ('+' | '-')? [0-9]+;
 
 BOOL_LIT: 'True' | 'False';
 
-STRING_LIT: '"' (~['"\\] | '\'' '"' | ESC)* '"';
+STRING_LIT: '"' (ESC | ~['"\\] | '\'' '"')*? '"';
 
-ARRAY_LIT: '{' (ARRAY_ELEM (',' ARRAY_ELEM)*)* '}';
+fragment ESC: '\\' [bfrnt'\\];
+
+ARRAY_LIT: '{' WS? (ARRAY_ELEM (WS? ',' WS? ARRAY_ELEM)*)* WS? '}';
 
 ARRAY_ELEM: INT_LIT | FLOAT_LIT | BOOL_LIT | STRING_LIT | ARRAY_LIT;
 
@@ -252,7 +248,7 @@ WS : [ \t\f\r\n]+ -> skip ; // skip spaces, tabs, newlines
 
 // Lexical Errors
 
-ILLEGAL_ESCAPE: '"' (~'\'' | '\'' '"')* '\\' ~[bfrnt'\\];
+ILLEGAL_ESCAPE: '"' (~[\\'] | '\'' '"')* ('\\' ~[bfrnt'\\] | '\'' ~'"');
 
 UNCLOSE_STRING: '"' (~'"' | '\'' '"')* ('\n' | EOF);
 

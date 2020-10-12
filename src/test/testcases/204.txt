@@ -1,0 +1,1 @@
+ **"A commented string, this string is ignored"** 

@@ -1,1 +1,1 @@
-Var: ;
+ "This is a string with a '" 
