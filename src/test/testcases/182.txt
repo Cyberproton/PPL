@@ -1,1 +1,0 @@
-While (False) Do For 1+xTruex-False+falseFalse;

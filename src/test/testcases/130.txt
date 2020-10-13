@@ -1,1 +1,0 @@
- "This is a Function inside a String" Function ** This is a Function inside a comment** 
